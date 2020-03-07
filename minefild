@@ -1,0 +1,170 @@
+package practice2;
+
+import java.util.Random;
+
+public class minefild 
+{
+	public boolean[][] mine = {{}};
+	public boolean[][] cover = {{}};
+	public int[][] hint = {{}};
+	public Random r = new Random();
+	
+	public minefild(int width, int height, float chance)
+	{
+		mine = new boolean[width][height];
+		cover = new boolean[width][height];
+		hint = new int[width][height];
+		populating(chance);
+	}
+	
+	
+	public String hintToString(int yy , int xx)
+	{
+		String temp = "";
+		int[] hintGrid = hint[0]; 
+		
+		for(int y = 0 ; y < hint.length; y++)
+		{
+			hintGrid = hint[y];
+			
+			for(int x = 0; x < hintGrid.length; x++)
+			{	
+				if(xx == x && yy == y)
+				{
+					temp += "= ";
+				}	
+				else if(hintGrid[x]==0)
+				{
+					temp +="  ";
+				}
+				else { temp += hintGrid[x] + " ";}	
+			}
+			temp +="\n";
+		}
+		return temp;
+	}
+	
+
+	public String toString()
+	{
+		String temp = "";
+		boolean[] newGrid = mine[0];
+		
+		for(int i = 0 ; i < mine.length ; i++)
+		{
+			newGrid = mine[i];
+			
+			for(int ii = 0 ; ii< mine.length; ii++)
+			{
+				if(newGrid[ii] == true)
+				{
+					temp += "O ";
+				}
+				else if(newGrid[ii] == false)
+				{
+					temp += "_ ";
+				}
+			}
+			temp +="\n";
+		}
+		return temp;
+	}
+	
+	
+	public void mineCount()
+	{		
+		int[] newHint = hint[0];
+		
+		for(int y = 0 ; y < hint.length; y++)
+		{
+			newHint = hint[y];
+			
+			for(int x = 0 ; x < newHint.length; x++)
+			{	
+				int count = 0;
+				newHint = hint[x];
+				
+			for(int y1 = -1; y1 <=1 ; y1++ )
+			{
+				for(int x1 = -1; x1 <=1; x1++)
+				{
+					int ix = x + x1;
+					int iy = y + y1;
+					
+					if (ix < 0 || ix >= newHint.length || iy < 0 || iy >= hint.length) { continue; }
+					if( mine[iy][ix] ) { count++; }
+				}
+				
+			}
+//				if(mine[y][x])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y-1][x-1] && )
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y][x-1])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y+1][x+1])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y-1][x])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y+1][x])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y-1][x+1])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y][x+1])
+//				{
+//					count++;
+//				}
+//				
+//				if(mine[y+1][x+1])
+//				{
+//					count++;
+//				}
+				hint[y][x] = count;
+			}	
+		}
+	
+	}
+	
+	private void populating(float chance)
+	{
+		boolean[] newGrid = mine[0];
+		
+		for(int i =0; i < mine.length; i++)
+		{
+			newGrid = mine[i];
+			
+			for(int ii=0; ii < newGrid.length;ii++)
+			{
+				if(chance*10 > r.nextInt(10))
+				{
+					newGrid[ii] =true;
+				}
+				else 
+				{
+					newGrid[ii] =false;
+				}																					
+			}
+		}
+	}
+}
